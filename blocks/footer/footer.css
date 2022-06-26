@@ -4,3 +4,9 @@
   color: #545454;
   font-family: 'Inter', sans-serif;
 }
+
+@media screen and (max-width: 400px) {
+  .footer {
+    margin: 51px auto 36px;
+  }
+}

@@ -4,3 +4,9 @@
   margin: -1px 0 0 0;
   font-weight: 500;
 }
+
+@media screen and (max-width: 400px) {
+  .profile__name {
+    font-size: 27px;
+  }
+}

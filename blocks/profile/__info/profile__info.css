@@ -5,6 +5,27 @@
   font-family: 'Inter', sans-serif;
   color: #ffffff;
   width: 336px;
-  height: 73px;
+  min-height: 73px;
   margin-left: 31px;
+}
+
+@media screen and (max-width: 720px) {
+  .profile__info {
+    margin-left: 32px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .profile__info {
+    justify-content: center;
+    width: 345px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .profile__info {
+    width: 282px;
+    min-height: 65px;
+    margin-left: 38px;
+  }
 }

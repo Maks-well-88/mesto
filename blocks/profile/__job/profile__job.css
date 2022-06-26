@@ -3,3 +3,11 @@
   font-size: 18px;
   line-height: 1.21;
 }
+
+@media screen and (max-width: 400px) {
+  .profile__job {
+    font-size: 14px;
+    margin-top: 0;
+    margin-left: -38px;
+  }
+}
