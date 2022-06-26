@@ -1,0 +1,10 @@
+.profile__info {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  width: 336px;
+  height: 73px;
+  margin-left: 31px;
+}
