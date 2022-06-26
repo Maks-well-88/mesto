@@ -6,3 +6,6 @@
 
 /* CONTAINER */
 @import url('../blocks/container/container.css');
+
+/* HEADER */
+@import url('../blocks/header/header.css');
