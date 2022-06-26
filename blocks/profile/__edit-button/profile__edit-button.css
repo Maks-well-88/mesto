@@ -8,3 +8,7 @@
   border: 1px solid #ffffff;
   margin: 4px 0 0 18px;
 }
+
+.profile__edit-button:hover {
+  opacity: .6;
+}
