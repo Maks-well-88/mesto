@@ -1,2 +1,8 @@
+/* NORMALIZE */
+@import url('../vendor/normalize.css');
+
 /* PAGE */
 @import url('../blocks/page/page.css');
+
+/* CONTAINER */
+@import url('../blocks/container/container.css');
