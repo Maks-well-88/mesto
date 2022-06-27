@@ -4,10 +4,15 @@
   line-height: 1.21;
 }
 
+@media screen and (max-width: 720px) {
+  .profile__job {
+    margin-left: -38px;
+  }
+}
+
 @media screen and (max-width: 400px) {
   .profile__job {
-    font-size: 14px;
     margin-top: 0;
-    margin-left: -38px;
+    font-size: 14px;
   }
 }
