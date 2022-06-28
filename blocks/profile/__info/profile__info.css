@@ -4,7 +4,7 @@
   align-items: center;
   font-family: 'Inter', sans-serif;
   color: #ffffff;
-  width: 336px;
+  width: 500px;
   min-height: 73px;
   margin-left: 31px;
 }
@@ -22,10 +22,16 @@
   }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 445px) {
   .profile__info {
     width: 282px;
     min-height: 65px;
     margin-left: 38px;
+  }
+}
+
+@media screen and (max-width: 365px) {
+  .profile__info {
+    width: 245px;
   }
 }
