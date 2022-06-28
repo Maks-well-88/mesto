@@ -5,6 +5,7 @@
   border: none;
   background-image: url('../../../images/Heart.svg');
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 .element__like-btn:hover {
