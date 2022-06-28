@@ -8,6 +8,7 @@
   box-sizing: border-box;
   border: 1px solid #ffffff;
   margin: 8px 0 0 18px;
+  padding: 0;
 }
 
 .profile__edit-button:hover {
