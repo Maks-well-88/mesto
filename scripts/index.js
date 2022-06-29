@@ -9,8 +9,8 @@ let profileJob = document.querySelector('.profile__job');
 
 function showPopup() {
   popupProfile.classList.add('popup_opened');
-  inputName.setAttribute('value', profileName.textContent);
-  inputJob.setAttribute('value', profileJob.textContent);
+  inputName.value = profileName.textContent;
+  inputJob.value =   profileJob.textContent;
 }
 function hidePopup() {
   popupProfile.classList.remove('popup_opened');
