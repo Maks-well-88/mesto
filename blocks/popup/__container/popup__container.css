@@ -5,7 +5,7 @@
   top: 195px;
   border-radius: 10px;
   background-color: #ffffff;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
 }
 
 @media screen and (max-width: 460px) {

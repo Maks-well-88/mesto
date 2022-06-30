@@ -4,7 +4,7 @@
   display: grid;
   grid-template: repeat(2, 1fr) / repeat(3, 1fr);
   gap: 20px 17px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
 }
 
 @media screen and (max-width: 925px) {
