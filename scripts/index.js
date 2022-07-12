@@ -50,9 +50,9 @@ const buttonAddNewPlace = document.querySelector(selectors.buttonAddNewPlace);
 const buttonEditProfile = document.querySelector(selectors.buttonEditProfile);
 const buttonCloseProfilePopup = document.querySelector(selectors.buttonClosePopup);
 const buttonClosePlacePopup = popupNewPlace.querySelector(selectors.buttonClosePopup);
-const formElement = document.querySelector(selectors.popupForm);
-let inputTypeName = formElement.querySelector(selectors.inputTypeName);
-let inputTypeJob = formElement.querySelector(selectors.inputTypeJob);
+const formProfile = popupProfile.querySelector(selectors.popupForm);
+let inputTypeName = formProfile.querySelector(selectors.inputTypeName);
+let inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
 let profileName = document.querySelector(selectors.profileName);
 let profileJob = document.querySelector(selectors.profileJob);
 
@@ -81,6 +81,14 @@ function createInitialCards(initialCards) {
   });
 }
 
+// handler for edit profile form
+function formProfileSubmitHandler(event) {
+  event.preventDefault();
+  profileName.textContent = inputTypeName.value;
+  profileJob.textContent = inputTypeJob.value;
+  hidePopup(popupProfile);
+}
+
 // functions calls
 createInitialCards(initialCards);
 
@@ -89,11 +97,4 @@ buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
 buttonEditProfile.addEventListener('click', () => showPopup(popupProfile));
 buttonCloseProfilePopup.addEventListener('click', () => hidePopup(popupProfile));
 buttonClosePlacePopup.addEventListener('click', () => hidePopup(popupNewPlace));
-formElement.addEventListener('submit', formSubmitHandler);
-
-function formSubmitHandler(evt) {
-  evt.preventDefault();
-  profileName.textContent = inputTypeName.value;
-  profileJob.textContent = inputTypeJob.value;
-  hidePopup(popupProfile);
-}
+formProfile.addEventListener('submit', formProfileSubmitHandler);
