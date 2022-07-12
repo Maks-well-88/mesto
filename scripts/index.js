@@ -1,27 +1,27 @@
 const initialCards = [
   {
     name: 'Сочи',
-    link: '../images/dima-fedorov-sochi.jpg'
+    link: '../images/dima-fedorov-sochi.jpg',
   },
   {
     name: 'Ялта',
-    link: '../images/dmitry-bogatyrev-yalta.jpg'
+    link: '../images/dmitry-bogatyrev-yalta.jpg',
   },
   {
     name: 'Домбай',
-    link: '../images/kirill-pershin-dombai.jpg'
+    link: '../images/kirill-pershin-dombai.jpg',
   },
   {
     name: 'Эльбрус',
-    link: '../images/kirill-pershin-elbrus.jpg'
+    link: '../images/kirill-pershin-elbrus.jpg',
   },
   {
     name: 'Карачаевск',
-    link: '../images/kirill-pershin-karachaevsk.jpg'
+    link: '../images/kirill-pershin-karachaevsk.jpg',
   },
   {
     name: 'Алтай',
-    link: '../images/sergei-wing-altay.jpg'
+    link: '../images/sergei-wing-altay.jpg',
   },
 ];
 
@@ -30,19 +30,19 @@ const selectors = {
   card: '.element',
   template: '.card-template',
   image: '.element__image',
-  title: '.element__title'
-}
+  title: '.element__title',
+};
 
 const blockOfElements = document.querySelector(selectors.block);
 
 //  initial cards creation function
 function createInitialCards(initialCards) {
-  initialCards.forEach(item => {
+  initialCards.forEach((item) => {
     const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
     card.querySelector(selectors.title).textContent = item.name;
     card.querySelector(selectors.image).src = item.link;
     card.querySelector(selectors.image).alt = item.name;
-    blockOfElements.appendChild(card); 
+    blockOfElements.appendChild(card);
   });
 }
 
