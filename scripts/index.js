@@ -1,29 +1,53 @@
 const initialCards = [
   {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg',
+    name: 'Сочи',
+    link: '../images/dima-fedorov-sochi.jpg'
   },
   {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg',
+    name: 'Ялта',
+    link: '../images/dmitry-bogatyrev-yalta.jpg'
   },
   {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg',
+    name: 'Домбай',
+    link: '../images/kirill-pershin-dombai.jpg'
   },
   {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg',
+    name: 'Эльбрус',
+    link: '../images/kirill-pershin-elbrus.jpg'
   },
   {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg',
+    name: 'Карачаевск',
+    link: '../images/kirill-pershin-karachaevsk.jpg'
   },
   {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
+    name: 'Алтай',
+    link: '../images/sergei-wing-altay.jpg'
   },
 ];
+
+const selectors = {
+  block: '.elements',
+  card: '.element',
+  template: '.card-template',
+  image: '.element__image',
+  title: '.element__title'
+}
+
+const blockOfElements = document.querySelector(selectors.block);
+
+//  initial cards creation function
+function createInitialCards(initialCards) {
+  initialCards.forEach(item => {
+    const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
+    card.querySelector(selectors.title).textContent = item.name;
+    card.querySelector(selectors.image).src = item.link;
+    card.querySelector(selectors.image).alt = item.name;
+    blockOfElements.appendChild(card); 
+  });
+}
+
+// function calls
+createInitialCards(initialCards);
 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const closePopupButton = document.querySelector('.popup__close');

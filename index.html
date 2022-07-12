@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./pages/index.css">
   <title>Место</title>
 </head>
+
 <body class="page">
   <div class="container">
     <header class="header">
@@ -24,54 +25,23 @@
         <button type="button" class="profile__add-button"></button>
       </section>
       <section class="elements">
-        <article class="element">
-          <img src="./images/sergei-wing-altay.jpg" alt="Алтай" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Алтай</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/dmitry-bogatyrev-yalta.jpg" alt="Ялта" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Ялта</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-karachaevsk.jpg" alt="Карачаевск" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Карачаевск</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/dima-fedorov-sochi.jpg" alt="Сочи" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Сочи</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-elbrus.jpg" alt="Эльбрус" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Гора Эльбрус</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
-        <article class="element">
-          <img src="./images/kirill-pershin-dombai.jpg" alt="Домбай" class="element__image">
-          <div class="element__description">
-            <h2 class="element__title">Домбай</h2>
-            <button type="button" class="element__like-btn"></button>
-          </div>
-        </article>
+
       </section>
     </main>
     <footer class="footer">
       <p class="footer__copyright" lang="en">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
+  <!-- CARD TEMPLATE -->
+  <template class="card-template">
+    <article class="element">
+      <img src="" alt="" class="element__image">
+      <div class="element__description">
+        <h2 class="element__title"></h2>
+        <button type="button" class="element__like-btn"></button>
+      </div>
+    </article>
+  </template>
   <!-- POP-UP FOR CHANGE DATA PROFILE -->
   <div class="popup">
     <div class="popup__container">
@@ -84,7 +54,8 @@
       </form>
     </div>
   </div>
-<!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT -->
   <script src="./scripts/index.js"></script>
 </body>
+
 </html>
