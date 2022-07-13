@@ -16,7 +16,7 @@ const initialCards = [
     link: '../images/kirill-pershin-elbrus.jpg',
   },
   {
-    name: 'Карачаевск',
+    name: 'Карачаево-Черкессия',
     link: '../images/kirill-pershin-karachaevsk.jpg',
   },
   {
@@ -30,13 +30,16 @@ const selectors = {
   card: '.element',
   template: '.card-template',
   image: '.element__image',
+  imagePopupImage: '.popup__image',
   buttonDeleteCard: '.element__delete-btn',
   title: '.element__title',
+  titlePopupImage: '.popup__image-title',
   buttonAddNewPlace: '.profile__add-button',
   buttonEditProfile: '.profile__edit-button',
   buttonClosePopup: '.popup__close',
   popupProfile: '.popup',
   popupNewPlace: '.popup_type_new-place',
+  popupImage: '.popup_type_image',
   popupForm: '.popup__form',
   inputTypeName: '.popup__input-field_type_name',
   inputTypeJob: '.popup__input-field_type_job',
@@ -50,10 +53,12 @@ const selectors = {
 const blockOfElements = document.querySelector(selectors.block);
 const popupProfile = document.querySelector(selectors.popupProfile);
 const popupNewPlace = document.querySelector(selectors.popupNewPlace);
+const popupImage = document.querySelector(selectors.popupImage);
 const buttonAddNewPlace = document.querySelector(selectors.buttonAddNewPlace);
 const buttonEditProfile = document.querySelector(selectors.buttonEditProfile);
 const buttonCloseProfilePopup = document.querySelector(selectors.buttonClosePopup);
 const buttonClosePlacePopup = popupNewPlace.querySelector(selectors.buttonClosePopup);
+const buttonCloseImagePopup = popupImage.querySelector(selectors.buttonClosePopup);
 const formProfile = popupProfile.querySelector(selectors.popupForm);
 const formNewPlace = popupNewPlace.querySelector(selectors.popupForm);
 const inputTypeName = formProfile.querySelector(selectors.inputTypeName);
@@ -79,9 +84,16 @@ function createCard(name, link) {
   const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
   const buttonLikeCard = card.querySelector(selectors.buttonLikeCard);
   const buttonDeleteCard = card.querySelector(selectors.buttonDeleteCard);
+  const image = card.querySelector(selectors.image);
   card.querySelector(selectors.title).textContent = name;
   card.querySelector(selectors.image).src = link;
   card.querySelector(selectors.image).alt = name;
+  image.onclick = () => {
+    showPopup(popupImage);
+    popupImage.querySelector(selectors.titlePopupImage).textContent = name;
+    popupImage.querySelector(selectors.imagePopupImage).src = link;
+    popupImage.querySelector(selectors.imagePopupImage).alt = name;
+  };
   buttonLikeCard.onclick = () => buttonLikeCard.classList.add('element__like-btn_active');
   buttonDeleteCard.onclick = () => card.remove();
   blockOfElements.prepend(card);
@@ -111,5 +123,6 @@ buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
 buttonEditProfile.addEventListener('click', () => showPopup(popupProfile));
 buttonCloseProfilePopup.addEventListener('click', () => hidePopup(popupProfile));
 buttonClosePlacePopup.addEventListener('click', () => hidePopup(popupNewPlace));
+buttonCloseImagePopup.addEventListener('click', () => hidePopup(popupImage));
 formProfile.addEventListener('submit', formProfileSubmitHandler);
 formNewPlace.addEventListener('submit', formNewPlaceSubmitHandler);
