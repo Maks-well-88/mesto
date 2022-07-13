@@ -39,6 +39,8 @@ const selectors = {
   popupForm: '.popup__form',
   inputTypeName: '.popup__input-field_type_name',
   inputTypeJob: '.popup__input-field_type_job',
+  inputTypeTitle: '.popup__input-field_type_title',
+  inputTypeLink: '.popup__input-field_type_link',
   profileName: '.profile__name',
   profileJob: '.profile__job',
 };
@@ -51,12 +53,14 @@ const buttonEditProfile = document.querySelector(selectors.buttonEditProfile);
 const buttonCloseProfilePopup = document.querySelector(selectors.buttonClosePopup);
 const buttonClosePlacePopup = popupNewPlace.querySelector(selectors.buttonClosePopup);
 const formProfile = popupProfile.querySelector(selectors.popupForm);
-let inputTypeName = formProfile.querySelector(selectors.inputTypeName);
-let inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
+const formNewPlace = popupNewPlace.querySelector(selectors.popupForm);
+const inputTypeName = formProfile.querySelector(selectors.inputTypeName);
+const inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
+const inputTypeTitle = formNewPlace.querySelector(selectors.inputTypeTitle);
+const inputTypeLink = formNewPlace.querySelector(selectors.inputTypeLink);
 let profileName = document.querySelector(selectors.profileName);
 let profileJob = document.querySelector(selectors.profileJob);
 
-// popup show function
 function showPopup(popup) {
   popup.classList.add('popup_opened');
   if (inputTypeName) {
@@ -65,23 +69,24 @@ function showPopup(popup) {
   }
 }
 
-// popup hide function
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
-//  initial cards creation function
+function createCard(name, link) {
+  const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
+  card.querySelector(selectors.title).textContent = name;
+  card.querySelector(selectors.image).src = link;
+  card.querySelector(selectors.image).alt = name;
+  blockOfElements.prepend(card);
+}
+
 function createInitialCards(initialCards) {
   initialCards.forEach((item) => {
-    const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
-    card.querySelector(selectors.title).textContent = item.name;
-    card.querySelector(selectors.image).src = item.link;
-    card.querySelector(selectors.image).alt = item.name;
-    blockOfElements.appendChild(card);
+    createCard(item.name, item.link);
   });
 }
 
-// handler for edit profile form
 function formProfileSubmitHandler(event) {
   event.preventDefault();
   profileName.textContent = inputTypeName.value;
@@ -89,12 +94,18 @@ function formProfileSubmitHandler(event) {
   hidePopup(popupProfile);
 }
 
-// functions calls
-createInitialCards(initialCards);
+function formNewPlaceSubmitHandler(event) {
+  event.preventDefault();
+  createCard(inputTypeTitle.value, inputTypeLink.value);
+  inputTypeTitle.value = '';
+  inputTypeLink.value = '';
+  hidePopup(popupNewPlace);
+}
 
-// events listeners
+createInitialCards(initialCards);
 buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
 buttonEditProfile.addEventListener('click', () => showPopup(popupProfile));
 buttonCloseProfilePopup.addEventListener('click', () => hidePopup(popupProfile));
 buttonClosePlacePopup.addEventListener('click', () => hidePopup(popupNewPlace));
 formProfile.addEventListener('submit', formProfileSubmitHandler);
+formNewPlace.addEventListener('submit', formNewPlaceSubmitHandler);
