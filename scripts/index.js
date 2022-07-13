@@ -43,6 +43,7 @@ const selectors = {
   inputTypeLink: '.popup__input-field_type_link',
   profileName: '.profile__name',
   profileJob: '.profile__job',
+  buttonLikeCard: '.element__like-btn',
 };
 
 const blockOfElements = document.querySelector(selectors.block);
@@ -75,9 +76,13 @@ function hidePopup(popup) {
 
 function createCard(name, link) {
   const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
+  const buttonLikeCard = card.querySelector(selectors.buttonLikeCard);
   card.querySelector(selectors.title).textContent = name;
   card.querySelector(selectors.image).src = link;
   card.querySelector(selectors.image).alt = name;
+  buttonLikeCard.onclick = () => {
+    buttonLikeCard.classList.add('element__like-btn_active');
+  };
   blockOfElements.prepend(card);
 }
 
