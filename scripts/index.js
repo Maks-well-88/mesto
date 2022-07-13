@@ -30,6 +30,7 @@ const selectors = {
   card: '.element',
   template: '.card-template',
   image: '.element__image',
+  buttonDeleteCard: '.element__delete-btn',
   title: '.element__title',
   buttonAddNewPlace: '.profile__add-button',
   buttonEditProfile: '.profile__edit-button',
@@ -77,19 +78,17 @@ function hidePopup(popup) {
 function createCard(name, link) {
   const card = document.querySelector(selectors.template).content.querySelector(selectors.card).cloneNode(true);
   const buttonLikeCard = card.querySelector(selectors.buttonLikeCard);
+  const buttonDeleteCard = card.querySelector(selectors.buttonDeleteCard);
   card.querySelector(selectors.title).textContent = name;
   card.querySelector(selectors.image).src = link;
   card.querySelector(selectors.image).alt = name;
-  buttonLikeCard.onclick = () => {
-    buttonLikeCard.classList.add('element__like-btn_active');
-  };
+  buttonLikeCard.onclick = () => buttonLikeCard.classList.add('element__like-btn_active');
+  buttonDeleteCard.onclick = () => card.remove();
   blockOfElements.prepend(card);
 }
 
 function createInitialCards(initialCards) {
-  initialCards.forEach((item) => {
-    createCard(item.name, item.link);
-  });
+  initialCards.forEach((item) => createCard(item.name, item.link));
 }
 
 function formProfileSubmitHandler(event) {
