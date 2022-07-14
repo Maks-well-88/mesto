@@ -37,7 +37,7 @@ const selectors = {
   buttonAddNewPlace: '.profile__add-button',
   buttonEditProfile: '.profile__edit-button',
   buttonClosePopup: '.popup__close',
-  popupProfile: '.popup',
+  popupProfile: '.popup_type_profile',
   popupNewPlace: '.popup_type_new-place',
   popupImage: '.popup_type_image',
   popupForm: '.popup__form',
@@ -56,28 +56,28 @@ const popupNewPlace = document.querySelector(selectors.popupNewPlace);
 const popupImage = document.querySelector(selectors.popupImage);
 const buttonAddNewPlace = document.querySelector(selectors.buttonAddNewPlace);
 const buttonEditProfile = document.querySelector(selectors.buttonEditProfile);
-const buttonCloseProfilePopup = document.querySelector(selectors.buttonClosePopup);
-const buttonClosePlacePopup = popupNewPlace.querySelector(selectors.buttonClosePopup);
-const buttonCloseImagePopup = popupImage.querySelector(selectors.buttonClosePopup);
+const buttonsClosePopup = document.querySelectorAll(selectors.buttonClosePopup);
 const formProfile = popupProfile.querySelector(selectors.popupForm);
 const formNewPlace = popupNewPlace.querySelector(selectors.popupForm);
 const inputTypeName = formProfile.querySelector(selectors.inputTypeName);
 const inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
 const inputTypeTitle = formNewPlace.querySelector(selectors.inputTypeTitle);
 const inputTypeLink = formNewPlace.querySelector(selectors.inputTypeLink);
-let profileName = document.querySelector(selectors.profileName);
-let profileJob = document.querySelector(selectors.profileJob);
+const profileName = document.querySelector(selectors.profileName);
+const profileJob = document.querySelector(selectors.profileJob);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
-  if (inputTypeName) {
-    inputTypeName.value = profileName.textContent;
-    inputTypeJob.value = profileJob.textContent;
-  }
 }
 
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
+}
+
+function showProfilePopup(popup) {
+  showPopup(popup);
+  inputTypeName.value = profileName.textContent;
+  inputTypeJob.value = profileJob.textContent;
 }
 
 function createCard(name, link) {
@@ -96,33 +96,33 @@ function createCard(name, link) {
   };
   buttonLikeCard.onclick = () => buttonLikeCard.classList.add('element__like-btn_active');
   buttonDeleteCard.onclick = () => card.remove();
-  blockOfElements.prepend(card);
+  return card;
 }
 
 function createInitialCards(initialCards) {
-  initialCards.forEach((item) => createCard(item.name, item.link));
+  initialCards.forEach((item) => blockOfElements.prepend(createCard(item.name, item.link)));
 }
 
-function formProfileSubmitHandler(event) {
+function handleProfileFormSubmit(event) {
   event.preventDefault();
   profileName.textContent = inputTypeName.value;
   profileJob.textContent = inputTypeJob.value;
   hidePopup(popupProfile);
 }
 
-function formNewPlaceSubmitHandler(event) {
+function handleNewPlaceFormSubmit(event) {
   event.preventDefault();
-  createCard(inputTypeTitle.value, inputTypeLink.value);
-  inputTypeTitle.value = '';
-  inputTypeLink.value = '';
+  blockOfElements.prepend(createCard(inputTypeTitle.value, inputTypeLink.value));
+  formNewPlace.reset();
   hidePopup(popupNewPlace);
 }
 
 createInitialCards(initialCards);
+formProfile.addEventListener('submit', handleProfileFormSubmit);
+formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
 buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
-buttonEditProfile.addEventListener('click', () => showPopup(popupProfile));
-buttonCloseProfilePopup.addEventListener('click', () => hidePopup(popupProfile));
-buttonClosePlacePopup.addEventListener('click', () => hidePopup(popupNewPlace));
-buttonCloseImagePopup.addEventListener('click', () => hidePopup(popupImage));
-formProfile.addEventListener('submit', formProfileSubmitHandler);
-formNewPlace.addEventListener('submit', formNewPlaceSubmitHandler);
+buttonEditProfile.addEventListener('click', () => showProfilePopup(popupProfile));
+buttonsClosePopup.forEach(button => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => hidePopup(popup));
+});
