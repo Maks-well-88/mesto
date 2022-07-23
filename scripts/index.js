@@ -68,13 +68,20 @@ const profileJob = document.querySelector(selectors.profileJob);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
-  popup.addEventListener('click', (event) => {
-    if (event.target === event.currentTarget) popup.classList.remove('popup_opened');
-  });
+  listenEvents(popup);
 }
 
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
+}
+
+function listenEvents(popup) {
+  popup.addEventListener('click', (event) => {
+    if (event.target === event.currentTarget) hidePopup(popup);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hidePopup(popup);
+  });
 }
 
 function showProfilePopup(popup) {
