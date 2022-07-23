@@ -68,6 +68,9 @@ const profileJob = document.querySelector(selectors.profileJob);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
+  popup.addEventListener('click', (event) => {
+    if (event.target === event.currentTarget) popup.classList.remove('popup_opened');
+  });
 }
 
 function hidePopup(popup) {
@@ -122,7 +125,7 @@ formProfile.addEventListener('submit', handleProfileFormSubmit);
 formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
 buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
 buttonEditProfile.addEventListener('click', () => showProfilePopup(popupProfile));
-buttonsClosePopup.forEach(button => {
+buttonsClosePopup.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => hidePopup(popup));
 });
