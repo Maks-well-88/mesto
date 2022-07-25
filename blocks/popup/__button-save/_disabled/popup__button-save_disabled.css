@@ -1,4 +1,5 @@
 .popup__button-save_disabled {
+  cursor: default;
   max-width: 358px;
   height: 50px;
   font-size: 18px;
