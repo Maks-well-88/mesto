@@ -68,10 +68,26 @@ const profileJob = document.querySelector(selectors.profileJob);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
+  enableEventsListeners(popup);
 }
 
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
+}
+
+function enableEventsListeners(popup) {
+  popup.addEventListener('click', (event) => {
+    if (event.target === event.currentTarget) hidePopup(popup);
+  });
+
+  function hidePopupByEsc(event) {
+    if (event.key === 'Escape') {
+      hidePopup(popup);
+      document.removeEventListener('keydown', hidePopupByEsc);
+    }
+  }
+
+  document.addEventListener('keydown', hidePopupByEsc);
 }
 
 function showProfilePopup(popup) {
@@ -103,15 +119,19 @@ function createInitialCards(initialCards) {
   initialCards.forEach((item) => blockOfElements.prepend(createCard(item.name, item.link)));
 }
 
-function handleProfileFormSubmit(event) {
+function handlePreventDefault(event) {
   event.preventDefault();
+}
+
+function handleProfileFormSubmit(event) {
+  handlePreventDefault(event);
   profileName.textContent = inputTypeName.value;
   profileJob.textContent = inputTypeJob.value;
   hidePopup(popupProfile);
 }
 
 function handleNewPlaceFormSubmit(event) {
-  event.preventDefault();
+  handlePreventDefault(event);
   blockOfElements.prepend(createCard(inputTypeTitle.value, inputTypeLink.value));
   formNewPlace.reset();
   hidePopup(popupNewPlace);
@@ -122,7 +142,7 @@ formProfile.addEventListener('submit', handleProfileFormSubmit);
 formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
 buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
 buttonEditProfile.addEventListener('click', () => showProfilePopup(popupProfile));
-buttonsClosePopup.forEach(button => {
+buttonsClosePopup.forEach((button) => {
   const popup = button.closest('.popup');
   button.addEventListener('click', () => hidePopup(popup));
 });
