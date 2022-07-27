@@ -8,12 +8,13 @@
 @media screen and (max-width: 720px) {
   .profile__job {
     margin-left: -38px;
+    text-align: center;
   }
 }
 
 @media screen and (max-width: 445px) {
   .profile__job {
-    margin-top: 0;
+    margin-top: 12px;
     font-size: 14px;
   }
 }

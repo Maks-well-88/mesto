@@ -11,6 +11,10 @@
   color: rgba(0, 0, 0, .3);
 }
 
+.popup__button-save_disabled:hover {
+  opacity: 1;
+}
+
 @media screen and (max-width: 460px) {
   .popup__button-save_disabled {
     max-width: 238px;
