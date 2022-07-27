@@ -38,6 +38,7 @@ const selectors = {
   buttonAddNewPlace: '.profile__add-button',
   buttonEditProfile: '.profile__edit-button',
   buttonClosePopup: '.popup__close',
+  buttonFormSubmit: '.popup__button-save',
   popupProfile: '.popup_type_profile',
   popupNewPlace: '.popup_type_new-place',
   popupImage: '.popup_type_image',
@@ -55,32 +56,37 @@ const blockOfElements = document.querySelector(selectors.block);
 const popupProfile = document.querySelector(selectors.popupProfile);
 const popupNewPlace = document.querySelector(selectors.popupNewPlace);
 const popupImage = document.querySelector(selectors.popupImage);
+const imageInPopup = popupImage.querySelector(selectors.imagePopupImage);
+const imageTitle = popupImage.querySelector(selectors.titlePopupImage);
 const buttonAddNewPlace = document.querySelector(selectors.buttonAddNewPlace);
 const buttonEditProfile = document.querySelector(selectors.buttonEditProfile);
 const buttonsClosePopup = document.querySelectorAll(selectors.buttonClosePopup);
 const formProfile = popupProfile.querySelector(selectors.popupForm);
 const formNewPlace = popupNewPlace.querySelector(selectors.popupForm);
+const buttonNewPlaceSubmit = formNewPlace.querySelector(selectors.buttonFormSubmit);
 const inputTypeName = formProfile.querySelector(selectors.inputTypeName);
 const inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
 const inputTypeTitle = formNewPlace.querySelector(selectors.inputTypeTitle);
 const inputTypeLink = formNewPlace.querySelector(selectors.inputTypeLink);
 const profileName = document.querySelector(selectors.profileName);
 const profileJob = document.querySelector(selectors.profileJob);
+const cardTemplate = document.querySelector(selectors.template);
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
-  document.addEventListener('keydown', hidePopupByEsc, { once: true });
+  document.addEventListener('keydown', hidePopupByEsc);
 }
 
 function hidePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', hidePopupByEsc, { once: true });
+  document.removeEventListener('keydown', hidePopupByEsc);
 }
 
 function hidePopupByEsc(event) {
   if (event.key === 'Escape') {
     const popup = document.querySelector('.popup_opened');
     popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', hidePopupByEsc);
   }
 }
 
@@ -92,7 +98,6 @@ function showProfilePopup(popup) {
 }
 
 function createCard(name, link) {
-  const cardTemplate = document.querySelector(selectors.template);
   const card = cardTemplate.content.querySelector(selectors.card).cloneNode(true);
   const buttonLikeCard = card.querySelector(selectors.buttonLikeCard);
   const buttonDeleteCard = card.querySelector(selectors.buttonDeleteCard);
@@ -103,10 +108,9 @@ function createCard(name, link) {
 
   image.addEventListener('click', () => {
     showPopup(popupImage);
-    const image = popupImage.querySelector(selectors.imagePopupImage);
-    popupImage.querySelector(selectors.titlePopupImage).textContent = name;
-    image.src = link;
-    image.alt = name;
+    imageTitle.textContent = name;
+    imageInPopup.src = link;
+    imageInPopup.alt = name;
   });
 
   buttonLikeCard.addEventListener('click', () => {
@@ -139,9 +143,8 @@ function handleNewPlaceFormSubmit(event) {
   handlePreventDefault(event);
   blockOfElements.prepend(createCard(inputTypeTitle.value, inputTypeLink.value));
   formNewPlace.reset();
-  const button = formNewPlace.querySelector('.popup__button-save');
-  button.classList.add('popup__button-save_disabled');
-  button.disabled = true;
+  buttonNewPlaceSubmit.classList.add('popup__button-save_disabled');
+  buttonNewPlaceSubmit.disabled = true;
   hidePopup(popupNewPlace);
 }
 

@@ -1,9 +1,0 @@
-.popup__container_type_new-place {
-  top: 186px;
-}
-
-@media screen and (max-width: 460px) {
-  .popup__container_type_new-place {
-    top: 122px;
-  }
-}

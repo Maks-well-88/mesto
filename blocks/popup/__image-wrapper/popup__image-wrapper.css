@@ -2,12 +2,5 @@
   max-width: 75vw;
   max-height: 75vh;
   font-family: 'Inter', 'Arial', sans-serif;
-  position: absolute;
-  top: 80px;
-}
-
-@media screen and (max-width: 385px) {
-  .popup__image-wrapper {
-    top: 136px;
-  }
+  position: relative;
 }
