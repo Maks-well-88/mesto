@@ -1,5 +1,6 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import Section from './Section.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -74,7 +75,8 @@ function createCard(name, link) {
 
 function handleNewPlaceFormSubmit(event) {
   handlePreventDefault(event);
-  blockOfElements.prepend(createCard(inputTypeTitle.value, inputTypeLink.value));
+  const newCard = new Section({}, blockOfElements);
+  newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
   formNewPlace.reset();
   validatorsList['new-place-form'].resetErrors();
   hidePopup(popupNewPlace);
@@ -91,7 +93,16 @@ buttonsClosePopup.forEach((button) => {
   button.addEventListener('click', () => hidePopup(popup));
 });
 
-initialCards.forEach((item) => blockOfElements.prepend(createCard(item.name, item.link)));
+// create initial cards
+const cardList = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => cardList.addItem(createCard(item.name, item.link)),
+  },
+  blockOfElements
+);
+
+cardList.renderItems();
 
 forms.forEach((form) => {
   const formValidator = new FormValidator(selectors, form);
