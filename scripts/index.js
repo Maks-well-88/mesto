@@ -2,6 +2,7 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
 import Popup from './Popup.js';
+import PopupWithImage from './PopupWithImage.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -26,13 +27,6 @@ import {
   validatorsList,
 } from './constants.js';
 
-function handleCardClick(name, link) {
-  showPopup(popupImage);
-  imageTitle.textContent = name;
-  imageInPopup.src = link;
-  imageInPopup.alt = name;
-}
-
 // create validation
 forms.forEach((form) => {
   const formValidator = new FormValidator(selectors, form);
@@ -40,6 +34,10 @@ forms.forEach((form) => {
   validatorsList[formName] = formValidator;
   formValidator.enableValidation();
 });
+
+const handleCardClick = (name, link) => {
+  imagePopup.showPopup(name, link);
+};
 
 // create card
 const createCard = (name, link) => {
@@ -59,9 +57,10 @@ const cardList = new Section(
 
 cardList.renderItems();
 
-// create new popup objects
+// create new popup-objects
 const profilePopup = new Popup('.popup_type_profile');
 const newPlacePopup = new Popup('.popup_type_new-place');
+const imagePopup = new PopupWithImage('.popup_type_image');
 
 const showProfilePopup = () => {
   inputTypeName.value = profileName.textContent;
@@ -97,3 +96,4 @@ formProfile.addEventListener('submit', handleProfileFormSubmit);
 formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
 profilePopup.setEventListeners();
 newPlacePopup.setEventListeners();
+imagePopup.setEventListeners();

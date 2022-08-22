@@ -10,23 +10,23 @@ class Popup {
     }
   };
 
-  showPopup = () => {
+  showPopup() {
     this._popup.classList.add('popup_opened');
     document.addEventListener('keydown', this._handleEscClose);
-  };
+  }
 
   hidePopup = () => {
     this._popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', this._handleEscClose);
   };
 
-  setEventListeners() {
+  setEventListeners = () => {
     this._popup.addEventListener(
       'mousedown',
       (event) => event.target === event.currentTarget && this.hidePopup()
     );
     this._closeButton.addEventListener('click', () => this.hidePopup());
-  }
+  };
 }
 
 export default Popup;
