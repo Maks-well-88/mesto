@@ -1,6 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
+import Popup from './Popup.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -25,30 +26,6 @@ import {
   validatorsList,
 } from './constants.js';
 
-function showPopup(popup) {
-  popup.classList.add('popup_opened');
-  document.addEventListener('keydown', hidePopupByEsc);
-}
-
-function hidePopup(popup) {
-  popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', hidePopupByEsc);
-}
-
-function hidePopupByEsc(event) {
-  if (event.key === 'Escape') {
-    const popup = document.querySelector('.popup_opened');
-    hidePopup(popup);
-  }
-}
-
-function showProfilePopup(popup) {
-  inputTypeName.value = profileName.textContent;
-  inputTypeJob.value = profileJob.textContent;
-  validatorsList['profile-form'].resetErrors();
-  showPopup(popup);
-}
-
 function handleCardClick(name, link) {
   showPopup(popupImage);
   imageTitle.textContent = name;
@@ -56,42 +33,20 @@ function handleCardClick(name, link) {
   imageInPopup.alt = name;
 }
 
-function handlePreventDefault(event) {
-  event.preventDefault();
-}
+// create validation
+forms.forEach((form) => {
+  const formValidator = new FormValidator(selectors, form);
+  const formName = form.getAttribute('name');
+  validatorsList[formName] = formValidator;
+  formValidator.enableValidation();
+});
 
-function handleProfileFormSubmit(event) {
-  handlePreventDefault(event);
-  profileName.textContent = inputTypeName.value;
-  profileJob.textContent = inputTypeJob.value;
-  hidePopup(popupProfile);
-}
-
-function createCard(name, link) {
+// create card
+const createCard = (name, link) => {
   const card = new Card(name, link, selectors.template, handleCardClick);
   const cardElement = card.createCard();
   return cardElement;
-}
-
-function handleNewPlaceFormSubmit(event) {
-  handlePreventDefault(event);
-  const newCard = new Section({}, blockOfElements);
-  newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
-  formNewPlace.reset();
-  validatorsList['new-place-form'].resetErrors();
-  hidePopup(popupNewPlace);
-}
-
-formProfile.addEventListener('submit', handleProfileFormSubmit);
-formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
-buttonAddNewPlace.addEventListener('click', () => showPopup(popupNewPlace));
-buttonEditProfile.addEventListener('click', () => showProfilePopup(popupProfile));
-
-buttonsClosePopup.forEach((button) => {
-  const popup = button.closest('.popup');
-  popup.addEventListener('mousedown', (event) => event.target === event.currentTarget && hidePopup(popup));
-  button.addEventListener('click', () => hidePopup(popup));
-});
+};
 
 // create initial cards
 const cardList = new Section(
@@ -104,9 +59,41 @@ const cardList = new Section(
 
 cardList.renderItems();
 
-forms.forEach((form) => {
-  const formValidator = new FormValidator(selectors, form);
-  const formName = form.getAttribute('name');
-  validatorsList[formName] = formValidator;
-  formValidator.enableValidation();
-});
+// create new popup objects
+const profilePopup = new Popup('.popup_type_profile');
+const newPlacePopup = new Popup('.popup_type_new-place');
+
+const showProfilePopup = () => {
+  inputTypeName.value = profileName.textContent;
+  inputTypeJob.value = profileJob.textContent;
+  validatorsList['profile-form'].resetErrors();
+  profilePopup.showPopup();
+};
+
+const handlePreventDefault = (event) => {
+  event.preventDefault();
+};
+
+const handleProfileFormSubmit = (event) => {
+  handlePreventDefault(event);
+  profileName.textContent = inputTypeName.value;
+  profileJob.textContent = inputTypeJob.value;
+  profilePopup.hidePopup();
+};
+
+const handleNewPlaceFormSubmit = (event) => {
+  handlePreventDefault(event);
+  const newCard = new Section({}, blockOfElements);
+  newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
+  formNewPlace.reset();
+  validatorsList['new-place-form'].resetErrors();
+  newPlacePopup.hidePopup();
+};
+
+// add eventlisteners
+buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
+buttonEditProfile.addEventListener('click', () => showProfilePopup());
+formProfile.addEventListener('submit', handleProfileFormSubmit);
+formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
+profilePopup.setEventListeners();
+newPlacePopup.setEventListeners();
