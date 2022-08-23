@@ -1,8 +1,8 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import Section from './Section.js';
-import Popup from './Popup.js';
 import PopupWithImage from './PopupWithImage.js';
+import PopupWithForm from './PopupWithForm.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -35,6 +35,7 @@ forms.forEach((form) => {
   formValidator.enableValidation();
 });
 
+// create handler for card
 const handleCardClick = (name, link) => {
   imagePopup.showPopup(name, link);
 };
@@ -55,11 +56,30 @@ const cardList = new Section(
   blockOfElements
 );
 
-cardList.renderItems();
+// create popup with profile info
+const profilePopup = new PopupWithForm({
+  popupSelector: '.popup_type_profile',
+  handleFormSubmit: (event) => {
+    event.preventDefault();
+    profileName.textContent = inputTypeName.value;
+    profileJob.textContent = inputTypeJob.value;
+    profilePopup.hidePopup();
+  },
+});
 
-// create new popup-objects
-const profilePopup = new Popup('.popup_type_profile');
-const newPlacePopup = new Popup('.popup_type_new-place');
+// create popup with new place
+const newPlacePopup = new PopupWithForm({
+  popupSelector: '.popup_type_new-place',
+  handleFormSubmit: (event) => {
+    event.preventDefault();
+    const newCard = new Section({}, blockOfElements);
+    newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
+    newPlacePopup.hidePopup();
+    validatorsList['new-place-form'].resetErrors();
+  },
+});
+
+// create popup with image
 const imagePopup = new PopupWithImage('.popup_type_image');
 
 const showProfilePopup = () => {
@@ -69,31 +89,12 @@ const showProfilePopup = () => {
   profilePopup.showPopup();
 };
 
-const handlePreventDefault = (event) => {
-  event.preventDefault();
-};
-
-const handleProfileFormSubmit = (event) => {
-  handlePreventDefault(event);
-  profileName.textContent = inputTypeName.value;
-  profileJob.textContent = inputTypeJob.value;
-  profilePopup.hidePopup();
-};
-
-const handleNewPlaceFormSubmit = (event) => {
-  handlePreventDefault(event);
-  const newCard = new Section({}, blockOfElements);
-  newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
-  formNewPlace.reset();
-  validatorsList['new-place-form'].resetErrors();
-  newPlacePopup.hidePopup();
-};
-
 // add eventlisteners
 buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
 buttonEditProfile.addEventListener('click', () => showProfilePopup());
-formProfile.addEventListener('submit', handleProfileFormSubmit);
-formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
 profilePopup.setEventListeners();
 newPlacePopup.setEventListeners();
 imagePopup.setEventListeners();
+
+// render initial cards
+cardList.renderItems();
