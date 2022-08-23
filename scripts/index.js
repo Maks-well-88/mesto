@@ -3,6 +3,7 @@ import FormValidator from './FormValidator.js';
 import Section from './Section.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
+// import UserInfo from './UserInfo.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -61,8 +62,9 @@ const profilePopup = new PopupWithForm({
   popupSelector: '.popup_type_profile',
   handleFormSubmit: (event) => {
     event.preventDefault();
-    profileName.textContent = inputTypeName.value;
-    profileJob.textContent = inputTypeJob.value;
+    const [inputName, inputJob] = profilePopup.returnValues();
+    profileName.textContent = inputName;
+    profileJob.textContent = inputJob;
     profilePopup.hidePopup();
   },
 });
@@ -73,7 +75,8 @@ const newPlacePopup = new PopupWithForm({
   handleFormSubmit: (event) => {
     event.preventDefault();
     const newCard = new Section({}, blockOfElements);
-    newCard.addItem(createCard(inputTypeTitle.value, inputTypeLink.value));
+    const [inputTitle, inputLink] = newPlacePopup.returnValues();
+    newCard.addItem(createCard(inputTitle, inputLink));
     newPlacePopup.hidePopup();
     validatorsList['new-place-form'].resetErrors();
   },
