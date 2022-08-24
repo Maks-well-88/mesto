@@ -79,21 +79,18 @@ const userInfo = new UserInfo({
   job: profileJob.textContent,
 });
 
-// show profile popup
-const showProfilePopup = () => {
+// add eventlisteners
+profilePopup.setEventListeners();
+newPlacePopup.setEventListeners();
+imagePopup.setEventListeners();
+buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
+buttonEditProfile.addEventListener('click', () => {
   const { name, job } = userInfo.getUserInfo();
   inputTypeName.value = name;
   inputTypeJob.value = job;
   validatorsList['profile-form'].resetErrors();
   profilePopup.showPopup();
-};
-
-// add eventlisteners
-buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
-buttonEditProfile.addEventListener('click', () => showProfilePopup());
-profilePopup.setEventListeners();
-newPlacePopup.setEventListeners();
-imagePopup.setEventListeners();
+});
 
 // render initial cards
 cardList.renderItems();
