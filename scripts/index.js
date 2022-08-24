@@ -3,7 +3,7 @@ import FormValidator from './FormValidator.js';
 import Section from './Section.js';
 import PopupWithImage from './PopupWithImage.js';
 import PopupWithForm from './PopupWithForm.js';
-// import UserInfo from './UserInfo.js';
+import UserInfo from './UserInfo.js';
 import { initialCards } from './data.js';
 import {
   selectors,
@@ -62,9 +62,8 @@ const profilePopup = new PopupWithForm({
   popupSelector: '.popup_type_profile',
   handleFormSubmit: (event) => {
     event.preventDefault();
-    const [inputName, inputJob] = profilePopup.returnValues();
-    profileName.textContent = inputName;
-    profileJob.textContent = inputJob;
+    const [name, job] = profilePopup.returnValues();
+    userInfo.setUserInfo(name, job);
     profilePopup.hidePopup();
   },
 });
@@ -75,8 +74,8 @@ const newPlacePopup = new PopupWithForm({
   handleFormSubmit: (event) => {
     event.preventDefault();
     const newCard = new Section({}, blockOfElements);
-    const [inputTitle, inputLink] = newPlacePopup.returnValues();
-    newCard.addItem(createCard(inputTitle, inputLink));
+    const [title, link] = newPlacePopup.returnValues();
+    newCard.addItem(createCard(title, link));
     newPlacePopup.hidePopup();
     validatorsList['new-place-form'].resetErrors();
   },
@@ -85,9 +84,17 @@ const newPlacePopup = new PopupWithForm({
 // create popup with image
 const imagePopup = new PopupWithImage('.popup_type_image');
 
+// create user info
+const userInfo = new UserInfo({
+  name: profileName.textContent,
+  job: profileJob.textContent,
+});
+
+// show profile popup
 const showProfilePopup = () => {
-  inputTypeName.value = profileName.textContent;
-  inputTypeJob.value = profileJob.textContent;
+  const { name, job } = userInfo.getUserInfo();
+  inputTypeName.value = name;
+  inputTypeJob.value = job;
   validatorsList['profile-form'].resetErrors();
   profilePopup.showPopup();
 };
