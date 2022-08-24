@@ -8,20 +8,10 @@ import { initialCards } from './data.js';
 import {
   selectors,
   blockOfElements,
-  popupImage,
-  imageTitle,
-  imageInPopup,
-  popupProfile,
-  popupNewPlace,
   buttonAddNewPlace,
   buttonEditProfile,
-  buttonsClosePopup,
-  formProfile,
-  formNewPlace,
   inputTypeName,
   inputTypeJob,
-  inputTypeTitle,
-  inputTypeLink,
   profileName,
   profileJob,
   forms,
@@ -36,16 +26,15 @@ forms.forEach((form) => {
   formValidator.enableValidation();
 });
 
-// create handler for card
-const handleCardClick = (name, link) => {
-  imagePopup.showPopup(name, link);
-};
-
-// create card
+// create card element
 const createCard = (name, link) => {
-  const card = new Card(name, link, selectors.template, handleCardClick);
-  const cardElement = card.createCard();
-  return cardElement;
+  const card = new Card(name, link, {
+    template: selectors.template,
+    handleCardClick: (name, link) => {
+      imagePopup.showPopup(name, link);
+    },
+  });
+  return card.createCard();
 };
 
 // create initial cards
@@ -59,7 +48,7 @@ const cardList = new Section(
 
 // create popup with profile info
 const profilePopup = new PopupWithForm({
-  popupSelector: '.popup_type_profile',
+  popupSelector: selectors.popupProfile,
   handleFormSubmit: (event) => {
     event.preventDefault();
     const [name, job] = profilePopup.returnValues();
@@ -70,7 +59,7 @@ const profilePopup = new PopupWithForm({
 
 // create popup with new place
 const newPlacePopup = new PopupWithForm({
-  popupSelector: '.popup_type_new-place',
+  popupSelector: selectors.popupNewPlace,
   handleFormSubmit: (event) => {
     event.preventDefault();
     const newCard = new Section({}, blockOfElements);
@@ -82,7 +71,7 @@ const newPlacePopup = new PopupWithForm({
 });
 
 // create popup with image
-const imagePopup = new PopupWithImage('.popup_type_image');
+const imagePopup = new PopupWithImage(selectors.popupImage);
 
 // create user info
 const userInfo = new UserInfo({

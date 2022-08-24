@@ -1,7 +1,9 @@
+import { selectors } from './constants.js';
+
 class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
-    this._closeButton = this._popup.querySelector('.popup__close');
+    this._closeButton = this._popup.querySelector(selectors.closeButton);
   }
 
   _handleEscClose = (event) => {
