@@ -1,11 +1,11 @@
-import './pages/index.css';
-import Card from './scripts/Card.js';
-import FormValidator from './scripts/FormValidator.js';
-import Section from './scripts/Section.js';
-import PopupWithImage from './scripts/PopupWithImage.js';
-import PopupWithForm from './scripts/PopupWithForm.js';
-import UserInfo from './scripts/UserInfo.js';
-import { initialCards } from './scripts/data.js';
+import './index.css';
+import Card from '../components/Card.js';
+import FormValidator from '../components/FormValidator.js';
+import Section from '../components/Section.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import UserInfo from '../components/UserInfo.js';
+import { initialCards } from '../components/data.js';
 import {
   selectors,
   blockOfElements,
@@ -17,7 +17,7 @@ import {
   profileJob,
   forms,
   validatorsList,
-} from './scripts/constants.js';
+} from '../components/constants.js';
 
 // create validation
 forms.forEach((form) => {
@@ -42,7 +42,11 @@ const createCard = (name, link) => {
 const cardList = new Section(
   {
     items: initialCards,
-    renderer: (item) => cardList.addItem(createCard(item.name, item.link)),
+    renderer: (items) => {
+      items.forEach((item) => {
+        cardList.addItem(createCard(item.name, item.link));
+      });
+    },
   },
   blockOfElements
 );
@@ -50,9 +54,8 @@ const cardList = new Section(
 // create popup with profile info
 const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
-  handleFormSubmit: (event) => {
-    event.preventDefault();
-    const [name, job] = profilePopup.returnValues();
+  handleFormSubmit: (data) => {
+    const { name, job } = data;
     userInfo.setUserInfo(name, job);
     profilePopup.hidePopup();
   },
@@ -61,11 +64,9 @@ const profilePopup = new PopupWithForm({
 // create popup with new place
 const newPlacePopup = new PopupWithForm({
   popupSelector: selectors.popupNewPlace,
-  handleFormSubmit: (event) => {
-    event.preventDefault();
-    const newCard = new Section({}, blockOfElements);
-    const [title, link] = newPlacePopup.returnValues();
-    newCard.addItem(createCard(title, link));
+  handleFormSubmit: (data) => {
+    const { title, url } = data;
+    cardList.addItem(createCard(title, url));
     newPlacePopup.hidePopup();
     validatorsList['new-place-form'].resetErrors();
   },
@@ -94,4 +95,4 @@ buttonEditProfile.addEventListener('click', () => {
 });
 
 // render initial cards
-cardList.renderItems();
+cardList.renderItems(initialCards);

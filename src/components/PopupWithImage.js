@@ -4,8 +4,8 @@ import { selectors } from './constants.js';
 class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
-    this._imageTitle = document.querySelector(selectors.popupImageTitle);
-    this._imageInPopup = document.querySelector(selectors.popupWithImage);
+    this._imageTitle = this._popup.querySelector(selectors.popupImageTitle);
+    this._imageInPopup = this._popup.querySelector(selectors.popupWithImage);
   }
 
   showPopup = (name, link) => {

@@ -2,8 +2,6 @@ import { selectors } from './constants.js';
 
 class UserInfo {
   constructor({ name, job }) {
-    this._name = name;
-    this._job = job;
     this._profileName = document.querySelector(selectors.profileName);
     this._profileJob = document.querySelector(selectors.profileJob);
   }
