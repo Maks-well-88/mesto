@@ -25,6 +25,7 @@ export const selectors = {
   closeButton: '.popup__close',
   popupImageTitle: '.popup__image-title',
   popupWithImage: '.popup__image',
+  avatar: '.profile__avatar-image',
 };
 
 export const popupImage = document.querySelector(selectors.popupImage);
@@ -40,4 +41,5 @@ export const inputTypeJob = formProfile.querySelector(selectors.inputTypeJob);
 export const profileName = document.querySelector(selectors.profileName);
 export const profileJob = document.querySelector(selectors.profileJob);
 export const forms = document.querySelectorAll(selectors.popupForm);
+export const avatar = document.querySelector(selectors.avatar);
 export const validatorsList = {};

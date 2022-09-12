@@ -5,6 +5,7 @@ import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
+import Api from '../components/Api.js';
 import { initialCards } from '../components/data.js';
 import {
   selectors,
@@ -17,6 +18,7 @@ import {
   profileJob,
   forms,
   validatorsList,
+  avatar,
 } from '../components/constants.js';
 
 // create validation
@@ -74,6 +76,19 @@ const newPlacePopup = new PopupWithForm({
 
 // create popup with image
 const imagePopup = new PopupWithImage(selectors.popupImage);
+
+// download user information from the server
+new Api({
+  url: 'https://nomoreparties.co/v1/cohort-50/users/me',
+  contentType: 'application/json',
+})
+  .getUserInfo()
+  .then((data) => {
+    profileName.textContent = data.name;
+    profileJob.textContent = data.about;
+    avatar.src = data.avatar;
+  })
+  .catch((err) => console.error(err));
 
 // create user info
 const userInfo = new UserInfo({

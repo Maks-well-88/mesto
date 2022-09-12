@@ -24,6 +24,7 @@
 @import url('../blocks/profile/__job/profile__job.css');
 @import url('../blocks/profile/__add-button/profile__add-button.css');
 @import url('../blocks/profile/__cross-img/profile__cross-img.css');
+@import url('../blocks/profile/__avatar-image/profile__avatar-image.css');
 
 /* POPUPS */
 @import url('../blocks/popup/popup.css');
