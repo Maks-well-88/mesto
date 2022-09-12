@@ -19,6 +19,23 @@ class Api {
       }
     });
   }
+
+  editProfile(body) {
+    return fetch(this._url, {
+      method: 'PATCH',
+      headers: {
+        authorization: this._token,
+        'content-type': this._contentType,
+      },
+      body: JSON.stringify(body),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    });
+  }
 }
 
 export default Api;

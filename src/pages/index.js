@@ -20,6 +20,18 @@ import {
   avatar,
 } from '../components/constants.js';
 
+// create profile api
+const profileApi = new Api({
+  url: 'https://nomoreparties.co/v1/cohort-50/users/me',
+  contentType: 'application/json',
+});
+
+// create cards api
+const cardsApi = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
+  contentType: 'application/json',
+});
+
 // create validation
 forms.forEach((form) => {
   const formValidator = new FormValidator(selectors, form);
@@ -52,8 +64,13 @@ const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
   handleFormSubmit: (data) => {
     const { name, job } = data;
-    userInfo.setUserInfo(name, job);
-    profilePopup.hidePopup();
+    profileApi
+      .editProfile({ name: name, about: job })
+      .then((data) => {
+        userInfo.setUserInfo(data.name, data.about);
+        profilePopup.hidePopup();
+      })
+      .catch((err) => console.error(err));
   },
 });
 
@@ -70,18 +87,6 @@ const newPlacePopup = new PopupWithForm({
 
 // create popup with image
 const imagePopup = new PopupWithImage(selectors.popupImage);
-
-// create profile api
-const profileApi = new Api({
-  url: 'https://nomoreparties.co/v1/cohort-50/users/me',
-  contentType: 'application/json',
-});
-
-// create cards api
-const cardsApi = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
-  contentType: 'application/json',
-});
 
 // download user information & render initial cards
 Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
