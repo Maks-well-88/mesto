@@ -47,15 +47,6 @@ const cardList = new Section({
   },
 });
 
-// render initial cards
-new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
-  contentType: 'application/json',
-})
-  .getInfo()
-  .then((data) => cardList.renderItems(data))
-  .catch((err) => console.error(err));
-
 // create popup with profile info
 const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
@@ -80,16 +71,25 @@ const newPlacePopup = new PopupWithForm({
 // create popup with image
 const imagePopup = new PopupWithImage(selectors.popupImage);
 
-// download user information from the server
-new Api({
+// create profile api
+const profileApi = new Api({
   url: 'https://nomoreparties.co/v1/cohort-50/users/me',
   contentType: 'application/json',
-})
-  .getInfo()
-  .then((data) => {
-    profileName.textContent = data.name;
-    profileJob.textContent = data.about;
-    avatar.src = data.avatar;
+});
+
+// create cards api
+const cardsApi = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
+  contentType: 'application/json',
+});
+
+// download user information & render initial cards
+Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
+  .then(([userData, cards]) => {
+    profileName.textContent = userData.name;
+    profileJob.textContent = userData.about;
+    avatar.src = userData.avatar;
+    cardList.renderItems(cards);
   })
   .catch((err) => console.error(err));
 
