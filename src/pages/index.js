@@ -55,7 +55,7 @@ const createCard = (name, link) => {
 const cardList = new Section({
   container: blockOfElements,
   renderer: (items) => {
-    items.forEach((item) => cardList.addItem(createCard(item.name, item.link)));
+    items.reverse().forEach((item) => cardList.addItem(createCard(item.name, item.link)));
   },
 });
 
@@ -79,9 +79,11 @@ const newPlacePopup = new PopupWithForm({
   popupSelector: selectors.popupNewPlace,
   handleFormSubmit: (data) => {
     const { title, url } = data;
-    cardList.addItem(createCard(title, url));
-    newPlacePopup.hidePopup();
-    validatorsList['new-place-form'].resetErrors();
+    cardsApi.addNewCard({ name: title, link: url }).then((data) => {
+      cardList.addItem(createCard(data.name, data.link));
+      newPlacePopup.hidePopup();
+      validatorsList['new-place-form'].resetErrors();
+    });
   },
 });
 

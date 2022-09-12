@@ -36,6 +36,23 @@ class Api {
       }
     });
   }
+
+  addNewCard(body) {
+    return fetch(this._url, {
+      method: 'POST',
+      headers: {
+        authorization: this._token,
+        'content-type': this._contentType,
+      },
+      body: JSON.stringify(body),
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    });
+  }
 }
 
 export default Api;
