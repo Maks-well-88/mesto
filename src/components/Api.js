@@ -5,7 +5,7 @@ class Api {
     this._token = 'b0180cd6-e00d-4c46-af25-2755ea60dd90';
   }
 
-  getUserInfo() {
+  getInfo() {
     return fetch(this._url, {
       headers: {
         authorization: this._token,

@@ -6,7 +6,6 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
-import { initialCards } from '../components/data.js';
 import {
   selectors,
   blockOfElements,
@@ -40,18 +39,22 @@ const createCard = (name, link) => {
   return card.createCard();
 };
 
-// create initial cards
-const cardList = new Section(
-  {
-    items: initialCards,
-    renderer: (items) => {
-      items.forEach((item) => {
-        cardList.addItem(createCard(item.name, item.link));
-      });
-    },
+// create list of cards
+const cardList = new Section({
+  container: blockOfElements,
+  renderer: (items) => {
+    items.forEach((item) => cardList.addItem(createCard(item.name, item.link)));
   },
-  blockOfElements
-);
+});
+
+// render initial cards
+new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
+  contentType: 'application/json',
+})
+  .getInfo()
+  .then((data) => cardList.renderItems(data))
+  .catch((err) => console.error(err));
 
 // create popup with profile info
 const profilePopup = new PopupWithForm({
@@ -82,7 +85,7 @@ new Api({
   url: 'https://nomoreparties.co/v1/cohort-50/users/me',
   contentType: 'application/json',
 })
-  .getUserInfo()
+  .getInfo()
   .then((data) => {
     profileName.textContent = data.name;
     profileJob.textContent = data.about;
@@ -108,6 +111,3 @@ buttonEditProfile.addEventListener('click', () => {
   validatorsList['profile-form'].resetErrors();
   profilePopup.showPopup();
 });
-
-// render initial cards
-cardList.renderItems(initialCards);

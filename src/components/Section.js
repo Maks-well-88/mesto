@@ -1,6 +1,5 @@
 class Section {
-  constructor({ items, renderer }, container) {
-    this._items = items;
+  constructor({ container, renderer }) {
     this._renderer = renderer;
     this._container = container;
   }
