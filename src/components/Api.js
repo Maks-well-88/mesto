@@ -53,6 +53,22 @@ class Api {
       }
     });
   }
+
+  removeCard(cartId) {
+    return fetch(`${this._url}/${cartId}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token,
+        'content-type': this._contentType,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return Promise.reject(`Ошибка: ${response.status}`);
+      }
+    });
+  }
 }
 
 export default Api;

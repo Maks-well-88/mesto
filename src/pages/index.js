@@ -6,6 +6,7 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
+import ConfirmationPopup from '../components/ConfirmationPopup.js';
 import {
   selectors,
   blockOfElements,
@@ -44,11 +45,25 @@ forms.forEach((form) => {
 });
 
 // create card element
-const createCard = (name, link) => {
-  const card = new Card(name, link, {
+const createCard = (data) => {
+  const card = new Card({
+    data: { ...data, currentUser: userId },
     template: selectors.template,
     handleCardClick: (name, link) => {
       imagePopup.showPopup(name, link);
+    },
+    handleDeleteIconClick: () => {
+      console.log(card.getId());
+      confirmationPopup.showPopup();
+      confirmationPopup.setSubmitAction(() => {
+        cardsApi
+          .removeCard(card.getId())
+          .then(() => {
+            card.removeCard();
+            confirmationPopup.hidePopup();
+          })
+          .catch((err) => console.error(err));
+      });
     },
   });
   return card.createCard();
@@ -58,7 +73,7 @@ const createCard = (name, link) => {
 const cardList = new Section({
   container: blockOfElements,
   renderer: (items) => {
-    items.reverse().forEach((item) => cardList.addItem(createCard(item.name, item.link)));
+    items.reverse().forEach((item) => cardList.addItem(createCard(item)));
   },
 });
 
@@ -83,7 +98,7 @@ const newPlacePopup = new PopupWithForm({
   handleFormSubmit: (data) => {
     const { title, url } = data;
     cardsApi.addNewCard({ name: title, link: url }).then((data) => {
-      cardList.addItem(createCard(data.name, data.link));
+      cardList.addItem(createCard(data));
       newPlacePopup.hidePopup();
       validatorsList['new-place-form'].resetErrors();
     });
@@ -92,6 +107,9 @@ const newPlacePopup = new PopupWithForm({
 
 // create popup with image
 const imagePopup = new PopupWithImage(selectors.popupImage);
+
+// create confirmation popup
+const confirmationPopup = new ConfirmationPopup(selectors.popupConfirmation);
 
 // download user information & render initial cards
 Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
@@ -114,6 +132,7 @@ const userInfo = new UserInfo({
 profilePopup.setEventListeners();
 newPlacePopup.setEventListeners();
 imagePopup.setEventListeners();
+confirmationPopup.setEventListeners();
 buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
 buttonEditProfile.addEventListener('click', () => {
   const { name, job } = userInfo.getUserInfo();

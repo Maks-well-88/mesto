@@ -12,6 +12,7 @@ export const selectors = {
   popupProfile: '.popup_type_profile',
   popupNewPlace: '.popup_type_new-place',
   popupImage: '.popup_type_image',
+  popupConfirmation: '.popup_type_delete-card',
   popupForm: '.popup__form',
   inputTypeName: '.popup__input-field_type_name',
   inputTypeJob: '.popup__input-field_type_job',
@@ -26,6 +27,7 @@ export const selectors = {
   popupImageTitle: '.popup__image-title',
   popupWithImage: '.popup__image',
   avatar: '.profile__avatar-image',
+  submitButton: '.popup__button-save_type_confirmation',
 };
 
 export const popupImage = document.querySelector(selectors.popupImage);
