@@ -20,6 +20,9 @@ import {
   avatar,
 } from '../components/constants.js';
 
+// initialized variable
+let userId = null;
+
 // create profile api
 const profileApi = new Api({
   url: 'https://nomoreparties.co/v1/cohort-50/users/me',
@@ -93,6 +96,7 @@ const imagePopup = new PopupWithImage(selectors.popupImage);
 // download user information & render initial cards
 Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
   .then(([userData, cards]) => {
+    userId = userData._id;
     profileName.textContent = userData.name;
     profileJob.textContent = userData.about;
     avatar.src = userData.avatar;
