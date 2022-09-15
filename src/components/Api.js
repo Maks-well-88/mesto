@@ -86,6 +86,19 @@ class Api {
       })
     );
   }
+
+  changeAvatarImage(avatarUrl) {
+    return this._getResponce(
+      fetch(`${this._url}/avatar`, {
+        method: 'PATCH',
+        headers: {
+          authorization: this._token,
+          'content-type': this._contentType,
+        },
+        body: JSON.stringify({ avatar: avatarUrl }),
+      })
+    );
+  }
 }
 
 export default Api;

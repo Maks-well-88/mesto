@@ -12,6 +12,7 @@ import {
   blockOfElements,
   buttonAddNewPlace,
   buttonEditProfile,
+  buttonEditAvatar,
   inputTypeName,
   inputTypeJob,
   profileName,
@@ -87,6 +88,9 @@ const cardList = new Section({
 // create popup with profile info
 const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
+  handleResetErrors: () => {
+    validatorsList['profile-form'].resetErrors();
+  },
   handleFormSubmit: (data) => {
     const { name, job } = data;
     profileApi
@@ -102,6 +106,9 @@ const profilePopup = new PopupWithForm({
 // create popup with new place
 const newPlacePopup = new PopupWithForm({
   popupSelector: selectors.popupNewPlace,
+  handleResetErrors: () => {
+    validatorsList['new-place-form'].resetErrors();
+  },
   handleFormSubmit: (data) => {
     const { title, url } = data;
     cardsApi.addNewCard({ name: title, link: url }).then((data) => {
@@ -117,6 +124,22 @@ const imagePopup = new PopupWithImage(selectors.popupImage);
 
 // create confirmation popup
 const confirmationPopup = new ConfirmationPopup(selectors.popupConfirmation);
+
+// create popup for change avatar
+const avatarPopup = new PopupWithForm({
+  popupSelector: selectors.popupAvatar,
+  handleResetErrors: () => {
+    validatorsList['avatar-form'].resetErrors();
+  },
+  handleFormSubmit: (data) => {
+    const { avatar_url } = data;
+    profileApi.changeAvatarImage(avatar_url).then((data) => {
+      avatar.src = data.avatar;
+      validatorsList['avatar-form'].resetErrors();
+      avatarPopup.hidePopup();
+    });
+  },
+});
 
 // download user information & render initial cards
 Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
@@ -139,7 +162,9 @@ const userInfo = new UserInfo({
 profilePopup.setEventListeners();
 newPlacePopup.setEventListeners();
 imagePopup.setEventListeners();
+avatarPopup.setEventListeners();
 confirmationPopup.setEventListeners();
+buttonEditAvatar.addEventListener('click', () => avatarPopup.showPopup());
 buttonAddNewPlace.addEventListener('click', () => newPlacePopup.showPopup());
 buttonEditProfile.addEventListener('click', () => {
   const { name, job } = userInfo.getUserInfo();

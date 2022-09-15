@@ -27,6 +27,8 @@ export const selectors = {
   popupImageTitle: '.popup__image-title',
   popupWithImage: '.popup__image',
   avatar: '.profile__avatar-image',
+  popupAvatar: '.popup_type_avatar',
+  buttonEditAvatar: '.profile__avatar',
   submitButton: '.popup__button-save_type_confirmation',
   likeCounter: '.element__like-counter',
 };
@@ -45,4 +47,5 @@ export const profileName = document.querySelector(selectors.profileName);
 export const profileJob = document.querySelector(selectors.profileJob);
 export const forms = document.querySelectorAll(selectors.popupForm);
 export const avatar = document.querySelector(selectors.avatar);
+export const buttonEditAvatar = document.querySelector(selectors.buttonEditAvatar);
 export const validatorsList = {};
