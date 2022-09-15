@@ -52,8 +52,15 @@ const createCard = (data) => {
     handleCardClick: (name, link) => {
       imagePopup.showPopup(name, link);
     },
+    handleLikeClick: () => {
+      cardsApi
+        .changelikeStatusCard(card.getId(), card.isLiked())
+        .then((data) => {
+          card.setLikesInfo(data.likes);
+        })
+        .catch((err) => console.error(err));
+    },
     handleDeleteIconClick: () => {
-      console.log(card.getId());
       confirmationPopup.showPopup();
       confirmationPopup.setSubmitAction(() => {
         cardsApi

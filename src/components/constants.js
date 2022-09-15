@@ -28,6 +28,7 @@ export const selectors = {
   popupWithImage: '.popup__image',
   avatar: '.profile__avatar-image',
   submitButton: '.popup__button-save_type_confirmation',
+  likeCounter: '.element__like-counter',
 };
 
 export const popupImage = document.querySelector(selectors.popupImage);
