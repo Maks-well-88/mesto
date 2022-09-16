@@ -29,7 +29,7 @@ export const selectors = {
   avatar: '.profile__avatar-image',
   popupAvatar: '.popup_type_avatar',
   buttonEditAvatar: '.profile__avatar',
-  submitButton: '.popup__button-save_type_confirmation',
+  submitButton: '.popup__button-save',
   likeCounter: '.element__like-counter',
 };
 

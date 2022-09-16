@@ -50,27 +50,23 @@ const createCard = (data) => {
   const card = new Card({
     data: { ...data, currentUser: userId },
     template: selectors.template,
-    handleCardClick: (name, link) => {
-      imagePopup.showPopup(name, link);
-    },
+    handleCardClick: (name, link) => imagePopup.showPopup(name, link),
     handleLikeClick: () => {
       cardsApi
         .changelikeStatusCard(card.getId(), card.isLiked())
-        .then((data) => {
-          card.setLikesInfo(data.likes);
-        })
+        .then((data) => card.setLikesInfo(data.likes))
         .catch((err) => console.error(err));
     },
     handleDeleteIconClick: () => {
+      confirmationPopup.renderLoading(false, 'Да');
       confirmationPopup.showPopup();
       confirmationPopup.setSubmitAction(() => {
+        confirmationPopup.renderLoading(true, 'Удаление...');
         cardsApi
           .removeCard(card.getId())
-          .then(() => {
-            card.removeCard();
-            confirmationPopup.hidePopup();
-          })
-          .catch((err) => console.error(err));
+          .then(() => card.removeCard())
+          .catch((err) => console.error(err))
+          .finally(() => confirmationPopup.hidePopup());
       });
     },
   });
@@ -80,18 +76,15 @@ const createCard = (data) => {
 // create list of cards
 const cardList = new Section({
   container: blockOfElements,
-  renderer: (items) => {
-    items.reverse().forEach((item) => cardList.addItem(createCard(item)));
-  },
+  renderer: (items) => items.reverse().forEach((item) => cardList.addItem(createCard(item))),
 });
 
 // create popup with profile info
 const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
-  handleResetErrors: () => {
-    validatorsList['profile-form'].resetErrors();
-  },
+  handleResetErrors: () => validatorsList['profile-form'].resetErrors(),
   handleFormSubmit: (data) => {
+    profilePopup.renderLoading(true, 'Сохранение...');
     const { name, job } = data;
     profileApi
       .editProfile({ name: name, about: job })
@@ -99,23 +92,32 @@ const profilePopup = new PopupWithForm({
         userInfo.setUserInfo(data.name, data.about);
         profilePopup.hidePopup();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        profilePopup.hidePopup();
+        profilePopup.renderLoading(false, 'Сохранить');
+      });
   },
 });
 
 // create popup with new place
 const newPlacePopup = new PopupWithForm({
   popupSelector: selectors.popupNewPlace,
-  handleResetErrors: () => {
-    validatorsList['new-place-form'].resetErrors();
-  },
+  handleResetErrors: () => validatorsList['new-place-form'].resetErrors(),
   handleFormSubmit: (data) => {
+    newPlacePopup.renderLoading(true, 'Создание...');
     const { title, url } = data;
-    cardsApi.addNewCard({ name: title, link: url }).then((data) => {
-      cardList.addItem(createCard(data));
-      newPlacePopup.hidePopup();
-      validatorsList['new-place-form'].resetErrors();
-    });
+    cardsApi
+      .addNewCard({ name: title, link: url })
+      .then((data) => {
+        cardList.addItem(createCard(data));
+        validatorsList['new-place-form'].resetErrors();
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        newPlacePopup.hidePopup();
+        newPlacePopup.renderLoading(false, 'Создать');
+      });
   },
 });
 
@@ -128,16 +130,21 @@ const confirmationPopup = new ConfirmationPopup(selectors.popupConfirmation);
 // create popup for change avatar
 const avatarPopup = new PopupWithForm({
   popupSelector: selectors.popupAvatar,
-  handleResetErrors: () => {
-    validatorsList['avatar-form'].resetErrors();
-  },
+  handleResetErrors: () => validatorsList['avatar-form'].resetErrors(),
   handleFormSubmit: (data) => {
+    avatarPopup.renderLoading(true, 'Сохранение...');
     const { avatar_url } = data;
-    profileApi.changeAvatarImage(avatar_url).then((data) => {
-      avatar.src = data.avatar;
-      validatorsList['avatar-form'].resetErrors();
-      avatarPopup.hidePopup();
-    });
+    profileApi
+      .changeAvatarImage(avatar_url)
+      .then((data) => {
+        avatar.src = data.avatar;
+        validatorsList['avatar-form'].resetErrors();
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        avatarPopup.hidePopup();
+        avatarPopup.renderLoading(false, 'Сохранить');
+      });
   },
 });
 
