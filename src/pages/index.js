@@ -25,17 +25,24 @@ import {
 // initialized variable
 let userId = null;
 
-// create profile api
-const profileApi = new Api({
-  url: 'https://nomoreparties.co/v1/cohort-50/users/me',
+// create api
+const api = new Api({
+  url: 'https://nomoreparties.co/v1/cohort-50',
   contentType: 'application/json',
+  token: 'b0180cd6-e00d-4c46-af25-2755ea60dd90',
 });
 
+// create profile api
+// const api = new Api({
+//   url: 'https://nomoreparties.co/v1/cohort-50/users/me',
+//   contentType: 'application/json',
+// });
+
 // create cards api
-const cardsApi = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
-  contentType: 'application/json',
-});
+// const api = new Api({
+//   url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
+//   contentType: 'application/json',
+// });
 
 // create validation
 forms.forEach((form) => {
@@ -52,7 +59,7 @@ const createCard = (data) => {
     template: selectors.template,
     handleCardClick: (name, link) => imagePopup.showPopup(name, link),
     handleLikeClick: () => {
-      cardsApi
+      api
         .changelikeStatusCard(card.getId(), card.isLiked())
         .then((data) => card.setLikesInfo(data.likes))
         .catch((err) => console.error(err));
@@ -62,7 +69,7 @@ const createCard = (data) => {
       confirmationPopup.showPopup();
       confirmationPopup.setSubmitAction(() => {
         confirmationPopup.renderLoading(true, 'Удаление...');
-        cardsApi
+        api
           .removeCard(card.getId())
           .then(() => card.removeCard())
           .catch((err) => console.error(err))
@@ -85,7 +92,7 @@ const profilePopup = new PopupWithForm({
   handleResetErrors: () => validatorsList['profile-form'].resetErrors(),
   handleFormSubmit: ({ name, job }) => {
     profilePopup.renderLoading(true, 'Сохранение...');
-    profileApi
+    api
       .editProfile({ name: name, about: job })
       .then((data) => {
         userInfo.setUserInfo(data.name, data.about);
@@ -105,7 +112,7 @@ const newPlacePopup = new PopupWithForm({
   handleResetErrors: () => validatorsList['new-place-form'].resetErrors(),
   handleFormSubmit: ({ title, url }) => {
     newPlacePopup.renderLoading(true, 'Создание...');
-    cardsApi
+    api
       .addNewCard({ name: title, link: url })
       .then((data) => {
         cardList.addItem(createCard(data));
@@ -129,10 +136,10 @@ const confirmationPopup = new ConfirmationPopup(selectors.popupConfirmation);
 const avatarPopup = new PopupWithForm({
   popupSelector: selectors.popupAvatar,
   handleResetErrors: () => validatorsList['avatar-form'].resetErrors(),
-  handleFormSubmit: (data) => {
+  handleFormSubmit: ({ avatar_url }) => {
     avatarPopup.renderLoading(true, 'Сохранение...');
-    const { avatar_url } = data;
-    profileApi
+    // const { avatar_url } = data;
+    api
       .changeAvatarImage(avatar_url)
       .then((data) => {
         avatar.src = data.avatar;
@@ -147,7 +154,7 @@ const avatarPopup = new PopupWithForm({
 });
 
 // download user information & render initial cards
-Promise.all([profileApi.getInfo(), cardsApi.getInfo()])
+Promise.all([api.getInfo(), api.renderInitialCards()])
   .then(([userData, cards]) => {
     userId = userData._id;
     profileName.textContent = userData.name;

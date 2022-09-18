@@ -2,22 +2,29 @@ class Api {
   constructor(config) {
     this._url = config.url;
     this._contentType = config.contentType;
-    this._token = 'b0180cd6-e00d-4c46-af25-2755ea60dd90';
+    this._token = config.token;
   }
 
   _getResponce(apiResult) {
     return apiResult.then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        return Promise.reject(`Ошибка: ${response.status}`);
-      }
+      return response.ok ? response.json() : Promise.reject(`Ошибка: ${response.status}`);
     });
   }
 
   getInfo() {
     return this._getResponce(
-      fetch(this._url, {
+      fetch(`${this._url}/users/me`, {
+        headers: {
+          authorization: this._token,
+          'content-type': this._contentType,
+        },
+      })
+    );
+  }
+
+  renderInitialCards() {
+    return this._getResponce(
+      fetch(`${this._url}/cards`, {
         headers: {
           authorization: this._token,
           'content-type': this._contentType,
@@ -28,7 +35,7 @@ class Api {
 
   editProfile(body) {
     return this._getResponce(
-      fetch(this._url, {
+      fetch(`${this._url}/users/me`, {
         method: 'PATCH',
         headers: {
           authorization: this._token,
@@ -41,7 +48,7 @@ class Api {
 
   addNewCard(body) {
     return this._getResponce(
-      fetch(this._url, {
+      fetch(`${this._url}/cards`, {
         method: 'POST',
         headers: {
           authorization: this._token,
@@ -54,7 +61,7 @@ class Api {
 
   removeCard(cartId) {
     return this._getResponce(
-      fetch(`${this._url}/${cartId}`, {
+      fetch(`${this._url}/cards/${cartId}`, {
         method: 'DELETE',
         headers: {
           authorization: this._token,
@@ -67,7 +74,7 @@ class Api {
   changelikeStatusCard(cartId, isLiked) {
     if (isLiked) {
       return this._getResponce(
-        fetch(`${this._url}/${cartId}/likes`, {
+        fetch(`${this._url}/cards/${cartId}/likes`, {
           method: 'DELETE',
           headers: {
             authorization: this._token,
@@ -77,7 +84,7 @@ class Api {
       );
     }
     return this._getResponce(
-      fetch(`${this._url}/${cartId}/likes`, {
+      fetch(`${this._url}/cards/${cartId}/likes`, {
         method: 'PUT',
         headers: {
           authorization: this._token,
@@ -89,7 +96,7 @@ class Api {
 
   changeAvatarImage(avatarUrl) {
     return this._getResponce(
-      fetch(`${this._url}/avatar`, {
+      fetch(`${this._url}/users/me/avatar`, {
         method: 'PATCH',
         headers: {
           authorization: this._token,
