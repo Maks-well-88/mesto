@@ -1,5 +1,5 @@
 import Popup from './Popup.js';
-import { selectors } from './constants.js';
+import { selectors } from '../utils/constants.js';
 
 class ConfirmationPopup extends Popup {
   constructor(popupSelector) {

@@ -1,5 +1,5 @@
 import Popup from './Popup.js';
-import { selectors } from './constants.js';
+import { selectors } from '../utils/constants.js';
 
 class PopupWithImage extends Popup {
   constructor(popupSelector) {
@@ -9,10 +9,10 @@ class PopupWithImage extends Popup {
   }
 
   showPopup = (name, link) => {
-    super.showPopup();
     this._imageTitle.textContent = name;
     this._imageInPopup.src = link;
     this._imageInPopup.alt = name;
+    super.showPopup();
   };
 }
 

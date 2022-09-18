@@ -20,7 +20,7 @@ import {
   forms,
   validatorsList,
   avatar,
-} from '../components/constants.js';
+} from '../utils/constants.js';
 
 // initialized variable
 let userId = null;
