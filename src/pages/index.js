@@ -83,9 +83,8 @@ const cardList = new Section({
 const profilePopup = new PopupWithForm({
   popupSelector: selectors.popupProfile,
   handleResetErrors: () => validatorsList['profile-form'].resetErrors(),
-  handleFormSubmit: (data) => {
+  handleFormSubmit: ({ name, job }) => {
     profilePopup.renderLoading(true, 'Сохранение...');
-    const { name, job } = data;
     profileApi
       .editProfile({ name: name, about: job })
       .then((data) => {
@@ -104,9 +103,8 @@ const profilePopup = new PopupWithForm({
 const newPlacePopup = new PopupWithForm({
   popupSelector: selectors.popupNewPlace,
   handleResetErrors: () => validatorsList['new-place-form'].resetErrors(),
-  handleFormSubmit: (data) => {
+  handleFormSubmit: ({ title, url }) => {
     newPlacePopup.renderLoading(true, 'Создание...');
-    const { title, url } = data;
     cardsApi
       .addNewCard({ name: title, link: url })
       .then((data) => {
