@@ -32,18 +32,6 @@ const api = new Api({
   token: 'b0180cd6-e00d-4c46-af25-2755ea60dd90',
 });
 
-// create profile api
-// const api = new Api({
-//   url: 'https://nomoreparties.co/v1/cohort-50/users/me',
-//   contentType: 'application/json',
-// });
-
-// create cards api
-// const api = new Api({
-//   url: 'https://mesto.nomoreparties.co/v1/cohort-50/cards',
-//   contentType: 'application/json',
-// });
-
 // create validation
 forms.forEach((form) => {
   const formValidator = new FormValidator(selectors, form);
@@ -83,7 +71,7 @@ const createCard = (data) => {
 // create list of cards
 const cardList = new Section({
   container: blockOfElements,
-  renderer: (items) => items.reverse().forEach((item) => cardList.addItem(createCard(item))),
+  renderer: (item) => cardList.addItems(createCard(item)),
 });
 
 // create popup with profile info
@@ -138,7 +126,6 @@ const avatarPopup = new PopupWithForm({
   handleResetErrors: () => validatorsList['avatar-form'].resetErrors(),
   handleFormSubmit: ({ avatar_url }) => {
     avatarPopup.renderLoading(true, 'Сохранение...');
-    // const { avatar_url } = data;
     api
       .changeAvatarImage(avatar_url)
       .then((data) => {

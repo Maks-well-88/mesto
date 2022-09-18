@@ -5,11 +5,15 @@ class Section {
   }
 
   renderItems = (items) => {
-    this._renderer(items);
+    items.forEach((item) => this._renderer(item));
   };
 
-  addItem = (element) => {
-    this._container.prepend(element);
+  addItems(items) {
+    this._container.append(items);
+  }
+
+  addItem = (item) => {
+    this._container.prepend(item);
   };
 }
 
